@@ -12,11 +12,11 @@ enyo.kind({
 
     published: {
         config: {
-            hostname: 'home.sala.us',
+            hostname: 'localhost',
             login: 'admin',
             password: 'admin',
             protocol: 'http',
-            port: 80,
+            port: 8080,
             serviceBase: 'alfresco/service/',
             prefix: '/_proxy/'
         }
