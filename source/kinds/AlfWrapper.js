@@ -3,6 +3,7 @@ enyo.kind({
 	kind: enyo.Component,
 	events: {
 		onConnect: "",
+		onLoadDocs: "",
 		onLoadSites: "",
 		onLoadNodes: ""
 	},
@@ -42,6 +43,16 @@ enyo.kind({
 				console.log('Login Failed');
 			}
 		);
+	},
+	getDocList: function(inSite) {
+		var _self = this;
+		this.alf.getDocList({site: inSite.shortName}, function(data) {
+			console.log("Got a doclist");
+			_self.doLoadDocs({data: data});
+		}, function(error) {
+			console.log("Error");
+			_self.doLoadDocs({error: error});
+		});
 	},
 
 	getSites: function() {

@@ -1,8 +1,8 @@
 enyo.kind({
 	name: "App",
 	components: [
-		{kind: "AlfWrapper", onConnect: "handleConnect", onLoadSites: "handleLoadSites"},
-		{kind: enyo.Panels, classes: "enyo-fit", components: [
+		{kind: "AlfWrapper", onConnect: "handleConnect", onLoadSites: "handleLoadSites", onLoadDocs: "handleLoadDocs"},
+		{kind: enyo.Panels, classes: "enyo-fit", draggable: false, components: [
 			{name: "loginPanel", kind: enyo.FittableRows, components: [
 				{kind: enyo.FittableColumns, classes: "enyo-center", components: [
 					{kind: enyo.FittableRows, components: [
@@ -31,7 +31,16 @@ enyo.kind({
 				]}
 			]},
 			{name: "mainPanel", kind: enyo.FittableRows, components: [
-				{content: "Main panel"}
+				{name: "docListWrapper", kind: enyo.FittableColumns, classes: "enyo-center", showing: false, components: [
+					{kind: enyo.FittableRows, components: [
+						//{content: "Select a site", style: "font-size: 0.7em; font-style: italic;"},
+						{kind: enyo.FittableColumns, components: [
+							{name: "docList", kind: enyo.List, count: 0, onSetupItem: "setupSite", ontap: "pickSite", style: "width: 15em;", components: [
+								{name: "doc", kind: "AlfNode"}
+							]}
+						]}
+					]}
+				]}
 			]}
 		]}
 	],
@@ -45,10 +54,9 @@ enyo.kind({
 	},
 	connectAlf: function() {
 		// TODO: Needs a more robust config system
-		var config = this.$.alfWrapper.getConfig();
 		var username = this.$.username.getValue();
 		var password = this.$.password.getValue();
-		config = enyo.mixin(config, {login: username, password: password});
+		var config = enyo.mixin(this.$.alfWrapper.getConfig(), {login: username, password: password});
 		this.$.alfWrapper.setConfig(config);
 		this.$.alfWrapper.connect();
 	},
@@ -71,11 +79,25 @@ enyo.kind({
 
 		return true;
 	},
+	handleLoadDocs: function(inSender, inEvent) {
+		if (inEvent.data) {
+			this.docs = inEvent.data.items;
+			this.log("Count: "+ this.docs.length);
+			this.log(this.docs);
+			//this.$.siteListWrapper.setShowing(this.docs.length);
+			//this.$.siteList.setCount(this.docs.length);
+			//this.$.siteList.refresh();
+		} else {
+			this.log(inEvent.error);
+		}
+
+		return true;
+	},
 	setupSite: function(inSender, inEvent) {
 		var index = inEvent.index;
 		var site = this.data[index];
 		this.log(index);
-		this.$.site.setTitle(site.title);
+		this.$.site.setTitle(site.title + " (" + site.shortName + ")");
 
 		return true;
 	},
@@ -83,6 +105,9 @@ enyo.kind({
 		var index = inEvent.index;
 		var site = this.data[index];
 		this.log(site);
+
+		// get the SkyClip directory
+		this.$.alfWrapper.getDocList(site);
 
 		this.$.panels.next();
 
