@@ -3,12 +3,10 @@ enyo.kind({
 	kind: enyo.Panels,
 	arrangerKind: enyo.CollapsingArranger,
 	components: [
-		{name: "docListWrapper", kind: enyo.FittableColumns, components: [
-			{kind: enyo.FittableRows, fit: true, components: [
-				{kind: enyo.FittableColumns, components: [
-					{name: "docList", kind: enyo.List, fit: true, count: 0, onSetupItem: "setupDoc", ontap: "pickDoc", components: [
-						{name: "doc", kind: "AlfNode"}
-					]}
+		{kind: enyo.FittableRows, fit: true, components: [
+			{kind: enyo.FittableColumns, components: [
+				{name: "docList", kind: enyo.List, fit: true, count: 0, onSetupItem: "setupDoc", ontap: "pickDoc", components: [
+					{name: "doc", kind: "AlfNode"}
 				]}
 			]}
 		]}
@@ -16,12 +14,8 @@ enyo.kind({
 	addDocs: function(inData) {
 		if (inData) {
 			this.docs = inData.items;
-			this.log("Count: "+ this.docs.length);
-			this.log(this.docs);
-			//this.$.docListWrapper.setShowing(this.docs.length);
 			this.$.docList.setCount(this.docs.length);
 			this.$.docList.refresh();
-			this.render();
 		} else {
 			this.log(inEvent.error);
 		}
@@ -29,7 +23,6 @@ enyo.kind({
 	setupDoc: function(inSender, inEvent) {
 		var index = inEvent.index;
 		var doc = this.docs[index];
-		this.log(doc);
 		this.$.doc.setTitle(doc.location.file);
 
 		return true;
