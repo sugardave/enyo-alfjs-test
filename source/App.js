@@ -18,11 +18,14 @@ enyo.kind({
 						{name: "login", kind: onyx.Button, content: "Log in", disabled: true, ontap: "connectAlf"}
 					]}
 				]},
-				{name: "sitePickerWrapper", kind: enyo.FittableColumns, classes: "enyo-center", showing: false, components: [
-					{kind: onyx.PickerDecorator, components: [
-						{content: "Choose a site"},
-						{name: "sitePicker", kind: onyx.FlyweightPicker, count: 0, onSetupItem: "setupSite", components: [
-							{name: "site", kind: "AlfNode"}
+				{tag: "br"},
+				{name: "siteListWrapper", kind: enyo.FittableColumns, classes: "enyo-center", showing: false, components: [
+					{kind: enyo.FittableRows, components: [
+						{content: "Select a site", style: "font-size: 0.7em; font-style: italic;"},
+						{kind: enyo.FittableColumns, components: [
+							{name: "siteList", kind: enyo.List, count: 0, onSetupItem: "setupSite", ontap: "pickSite", style: "width: 15em;", components: [
+								{name: "site", kind: "AlfNode"}
+							]}
 						]}
 					]}
 				]}
@@ -59,9 +62,9 @@ enyo.kind({
 		if (inEvent.data) {
 			this.data = inEvent.data;
 			this.log("Count: "+this.data.length);
-			this.$.sitePickerWrapper.setShowing(this.data.length);
-			this.$.sitePicker.setCount(this.data.length);
-			//this.$.docList.setData(inEvent.data);
+			this.$.siteListWrapper.setShowing(this.data.length);
+			this.$.siteList.setCount(this.data.length);
+			this.$.siteList.refresh();
 		} else {
 			this.log(inEvent.error);
 		}
@@ -71,51 +74,18 @@ enyo.kind({
 	setupSite: function(inSender, inEvent) {
 		var index = inEvent.index;
 		var site = this.data[index];
-		this.log("ADDING SITE:");
-		this.log(site);
-		this.$.site.setTitle(site.shortName);
-		//this.$.sitePickerWrapper.resized();
+		this.log(index);
+		this.$.site.setTitle(site.title);
 
 		return true;
-	}
-});
-
-enyo.kind({
-	name: "AppFoo",
-	kind: enyo.FittableRows,
-	classes: "onyx",
-	components:[
-		{kind: "AlfWrapper", onConnect: "handleConnect", onLoadSites: "handleLoadSites"},
-		{name: "docList", kind: enyo.List, onSetupItem: "handleAddItem", ontap: "getNodes", components: [
-			{kind:"AlfNode"}
-		]}
-	],
-
-	create: function() {
-		this.inherited(arguments);
-		this.$.alfWrapper.connect();
 	},
+	pickSite: function(inSender, inEvent) {
+		var index = inEvent.index;
+		var site = this.data[index];
+		this.log(site);
 
-	handleConnect: function(inSender, inEvent) {
-		this.log(inEvent.error === null);
-		this.$.alfWrapper.getSites();
-	},
+		this.$.panels.next();
 
-	handleLoadSites: function(inSender, inEvent) {
-
-		if (inEvent.data) {
-			this.data = inEvent.data;
-			this.log("Count: "+this.data.length);
-			this.$.docList.setCount(this.data.length);
-			this.$.docList.refresh();
-			//this.$.docList.setData(inEvent.data);
-		} else {
-			this.log(inEvent.error);
-		}
-
-	},
-	handleAddItem: function(inSender, inEvent) {
-		this.log(this.data[inEvent.index].title);
-		this.$.alfNode.setTitle(this.data[inEvent.index].title);
+		//return true;
 	}
 });
