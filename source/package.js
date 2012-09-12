@@ -1,11 +1,12 @@
 enyo.depends(
 	"$lib/layout",
 	"$lib/onyx",
-    "$lib/alfresco/alf.js",
+	"$lib/alfresco/alf.js",
 
-    "$lib/masonry/source",
+	"$lib/masonry/source",
 
-    "kinds",
+	"kinds",
+	"views",
 	"App.css",
 	"App.js"
 );

@@ -3,60 +3,22 @@ enyo.kind({
 	components: [
 		{kind: "AlfWrapper", onConnect: "handleConnect", onLoadSites: "handleLoadSites", onLoadDocs: "handleLoadDocs"},
 		{kind: enyo.Panels, classes: "enyo-fit", draggable: false, components: [
-			{name: "loginPanel", kind: enyo.FittableRows, components: [
-				{kind: enyo.FittableColumns, classes: "enyo-center", components: [
-					{kind: enyo.FittableRows, components: [
-						{content: "Please log in", style: "font-size: 0.7em; font-style: italic;"},
-						{kind: onyx.InputDecorator, components: [
-							{name: "username", kind: onyx.Input, placeholder: "username", classes: "center-placeholder", onkeydown: "inputChanged"}
-						]},
-						{tag: "br"},
-						{kind: onyx.InputDecorator, components: [
-							{name: "password", kind: onyx.Input, placeholder: "password", classes: "center-placeholder", onkeydown: "inputChanged"}
-						]},
-						{tag: "br"},
-						{name: "login", kind: onyx.Button, content: "Log in", disabled: true, ontap: "connectAlf"}
-					]}
-				]},
-				{tag: "br"},
-				{name: "siteListWrapper", kind: enyo.FittableColumns, classes: "enyo-center", showing: false, components: [
-					{kind: enyo.FittableRows, components: [
-						{content: "Select a site", style: "font-size: 0.7em; font-style: italic;"},
-						{kind: enyo.FittableColumns, components: [
-							{name: "siteList", kind: enyo.List, count: 0, onSetupItem: "setupSite", ontap: "pickSite", style: "width: 15em;", components: [
-								{name: "site", kind: "AlfNode"}
-							]}
-						]}
-					]}
-				]}
-			]},
-			{name: "mainPanel", kind: enyo.FittableRows, components: [
-				{name: "docListWrapper", kind: enyo.FittableColumns, classes: "enyo-center", showing: false, components: [
-					{kind: enyo.FittableRows, fit: true, components: [
-						//{content: "Select a site", style: "font-size: 0.7em; font-style: italic;"},
-						{kind: enyo.FittableColumns, components: [
-							{name: "docList", kind: enyo.List, fit: true, count: 0, onSetupItem: "setupDoc", ontap: "pickDoc", components: [
-								{name: "doc", kind: "AlfNode"}
-							]}
-						]}
-					]}
-				]}
-			]}
+			{name: "loginPanel", kind: "LoginPanel"},
+			{name: "mainPanel", kind: "MainPanel"}
 		]}
 	],
-	inputChanged: function(inSender, inEvent) {
-		setTimeout(enyo.bind(this, function() {
-			var username = this.$.username.getValue();
-			var password = this.$.password.getValue();
-			var empty = (!username || !password);
-			this.$.login.setDisabled(empty);
-		}), 0);
+	handlers: {
+		onLoginRequest: "connectAlf",
+		onShowSite: "showSite"
 	},
-	connectAlf: function() {
+	connectAlf: function(inSender, inEvent) {
 		// TODO: Needs a more robust config system
-		var username = this.$.username.getValue();
-		var password = this.$.password.getValue();
-		var config = enyo.mixin(this.$.alfWrapper.getConfig(), {login: username, password: password});
+		var credentials = inEvent.credentials;
+		var login = credentials.login;
+		var password = credentials.password;
+		
+		var config = enyo.mixin(this.$.alfWrapper.getConfig(), {login: login, password: password});
+		
 		this.$.alfWrapper.setConfig(config);
 		this.$.alfWrapper.connect();
 	},
@@ -67,59 +29,23 @@ enyo.kind({
 		return true;
 	},
 	handleLoadSites: function(inSender, inEvent) {
-		if (inEvent.data) {
-			this.data = inEvent.data;
-			this.log("Count: "+this.data.length);
-			this.$.siteListWrapper.setShowing(this.data.length);
-			this.$.siteList.setCount(this.data.length);
-			this.$.siteList.refresh();
-		} else {
-			this.log(inEvent.error);
-		}
+
+		this.$.loginPanel.addSites(inEvent.data);
 
 		return true;
 	},
-	handleLoadDocs: function(inSender, inEvent) {
-		if (inEvent.data) {
-			this.docs = inEvent.data.items;
-			this.log("Count: "+ this.docs.length);
-			this.log(this.docs);
-			this.$.docListWrapper.setShowing(this.docs.length);
-			this.$.docList.setCount(this.docs.length);
-			this.$.docList.refresh();
-			this.render();
-		} else {
-			this.log(inEvent.error);
-		}
-
-		return true;
-	},
-	setupDoc: function(inSender, inEvent) {
-		var index = inEvent.index;
-		var doc = this.docs[index];
-		this.log(doc);
-		this.$.doc.setTitle(doc.location.file);
-
-		return true;
-	},
-	setupSite: function(inSender, inEvent) {
-		var index = inEvent.index;
-		var site = this.data[index];
-		this.log(index);
-		this.$.site.setTitle(site.title + " (" + site.shortName + ")");
-
-		return true;
-	},
-	pickSite: function(inSender, inEvent) {
-		var index = inEvent.index;
-		var site = this.data[index];
+	showSite: function(inSender, inEvent) {
+		var site = inEvent.site;
 		this.log(site);
 
-		// get the SkyClip directory
+		// get the DocList
 		this.$.alfWrapper.getDocList(site);
 
 		this.$.panels.next();
+	},
+	handleLoadDocs: function(inSender, inEvent) {
+		this.$.mainPanel.addDocs(inEvent.data);
 
-		//return true;
+		return true;
 	}
 });
