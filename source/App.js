@@ -32,10 +32,10 @@ enyo.kind({
 			]},
 			{name: "mainPanel", kind: enyo.FittableRows, components: [
 				{name: "docListWrapper", kind: enyo.FittableColumns, classes: "enyo-center", showing: false, components: [
-					{kind: enyo.FittableRows, components: [
+					{kind: enyo.FittableRows, fit: true, components: [
 						//{content: "Select a site", style: "font-size: 0.7em; font-style: italic;"},
 						{kind: enyo.FittableColumns, components: [
-							{name: "docList", kind: enyo.List, count: 0, onSetupItem: "setupSite", ontap: "pickSite", style: "width: 15em;", components: [
+							{name: "docList", kind: enyo.List, fit: true, count: 0, onSetupItem: "setupDoc", ontap: "pickDoc", components: [
 								{name: "doc", kind: "AlfNode"}
 							]}
 						]}
@@ -84,12 +84,21 @@ enyo.kind({
 			this.docs = inEvent.data.items;
 			this.log("Count: "+ this.docs.length);
 			this.log(this.docs);
-			//this.$.siteListWrapper.setShowing(this.docs.length);
-			//this.$.siteList.setCount(this.docs.length);
-			//this.$.siteList.refresh();
+			this.$.docListWrapper.setShowing(this.docs.length);
+			this.$.docList.setCount(this.docs.length);
+			this.$.docList.refresh();
+			this.render();
 		} else {
 			this.log(inEvent.error);
 		}
+
+		return true;
+	},
+	setupDoc: function(inSender, inEvent) {
+		var index = inEvent.index;
+		var doc = this.docs[index];
+		this.log(doc);
+		this.$.doc.setTitle(doc.location.file);
 
 		return true;
 	},
