@@ -8,3 +8,11 @@
 	background-color: silver;
 	padding: 16px;
 }
+
+.center-placeholder::-webkit-input-placeholder {
+	text-align: center;
+}
+
+.center-placeholder:-moz-placeholder {
+	text-align: center;
+}
