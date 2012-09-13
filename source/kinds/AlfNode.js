@@ -1,18 +1,36 @@
 enyo.kind({
 	name:"AlfNode",
-	kind: onyx.Item,
+	//kind: onyx.Item,
+	layoutKind: enyo.FittableRowsLayout,
 	classes: "alf-node",
 	published: {
-		url: "",
+		author: "",
+		description: "",
+		thumbnail: "",
 		title: "",
-		description: ""
+		url: ""
 	},
 	components: [
-		{tag: "span", name: "title"}
+		{name: "title"},
+		{name: "thumbnail"},
+		{name: "author"},
+		{name: "description"}
 	],
 	create: function() {
 		this.inherited(arguments);
+		this.authorChanged();
+		this.descriptionChanged();
+		this.thumbnailChanged();
 		this.titleChanged();
+	},
+	authorChanged: function() {
+		this.$.author.setContent(this.author);
+	},
+	descriptionChanged: function() {
+		this.$.description.setContent(this.description);
+	},
+	thumbnailChanged: function() {
+		this.$.thumbnail.setContent(this.thumbnail);
 	},
 	titleChanged: function() {
 		this.$.title.setContent(this.title);

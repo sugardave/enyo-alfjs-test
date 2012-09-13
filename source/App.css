@@ -9,6 +9,13 @@
 	padding: 16px;
 }
 
+.alf-text-node {
+	margin: 16px;
+	border-radius: 4px;
+	background-color: pink;
+	padding: 16px;
+}
+
 .center-placeholder::-webkit-input-placeholder {
 	text-align: center;
 }
@@ -43,8 +50,8 @@
 }
 
 .masonry-brick {
-	background-color: white;
+	/*background-color: white;
 	border-radius: 5px;
 	margin: 5px;
-	padding: 5px;
+	padding: 5px;*/
 }

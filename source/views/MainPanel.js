@@ -44,14 +44,14 @@ enyo.kind({
 		var folderPath = doc.location.path + doc.location.file;
 		this.log(doc);
 		var callback = enyo.bind(this, function(inSender, inEvent) {
-			var items = inEvent.data.items;
-			var nodes = [];
+			var items = inEvent.data.items, item;
+			var nodes = [], node;
 			if (items.length) {
 				for (var i = 0, j = items.length; i < j; i += 1) {
-					this.log("ADD A BRICK");
-					this.log(items[i]);
-					//this.$.masonry.createComponent({content: "A node!"});
-					nodes.push({kind: "AlfNode", title: items[i].location.file});
+					item = items[i];
+					this.log("ITEM");
+					this.log(item);
+					nodes.push({kind: "AlfTextNode", title: item.location.file, author: item.node.properties["cm:creator"].displayName, description: "Need a description", thumbnail: "Need a thumbnail"});
 				}
 				this.buildBricks(nodes);
 			}
@@ -65,6 +65,6 @@ enyo.kind({
 		this.$.scroller.destroyClientControls();
 		this.$.scroller.createComponent({name: "masonry", kind: "com.Pre101.Masonry"}, {owner: this});
 		this.$.masonry.createComponents(inNodes, {owner: this});
-		this.render();
+		this.$.scroller.render();
 	}
 });
