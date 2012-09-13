@@ -4,7 +4,7 @@ enyo.kind({
 		{kind: "AlfWrapper", onConnect: "handleConnect", onLoadSites: "handleLoadSites", onLoadDocs: "handleLoadDocs"},
 		{kind: enyo.Panels, classes: "enyo-fit", draggable: false, components: [
 			{name: "loginPanel", kind: "LoginPanel"},
-			{name: "mainPanel", kind: "MainPanel"}
+			{name: "mainPanel", kind: "MainPanel", onBack: "doBack"}
 		]}
 	],
 	handlers: {
@@ -47,5 +47,8 @@ enyo.kind({
 		this.$.mainPanel.addDocs(inEvent.data);
 
 		return true;
+	},
+	doBack: function() {
+		this.$.panels.previous();
 	}
 });

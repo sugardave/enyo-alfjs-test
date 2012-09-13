@@ -1,14 +1,22 @@
 enyo.kind({
 	name: "MainPanel",
-	kind: enyo.Panels,
-	arrangerKind: enyo.CollapsingArranger,
+	//kind: enyo.Panels,
+	//arrangerKind: enyo.CollapsingArranger,
+	layoutKind: enyo.FittableRowsLayout,
+	events: {
+		onBack: ""
+	},
 	components: [
-		{kind: enyo.FittableRows, fit: true, components: [
-			{kind: enyo.FittableColumns, components: [
-				{name: "docList", kind: enyo.List, fit: true, count: 0, onSetupItem: "setupDoc", ontap: "pickDoc", components: [
-					{name: "doc", kind: "AlfNode"}
-				]}
-			]}
+		{kind: onyx.Toolbar, content: "Alfresco Sample"},
+		{kind: enyo.Panels, arrangerKind: enyo.CollapsingArranger, fit: true, components: [
+			{name: "docList", kind: enyo.List, fit: true, count: 0, onSetupItem: "setupDoc", ontap: "pickDoc", style: "max-width: 25%;", components: [
+				{name: "doc", kind: "AlfNode"}
+			]},
+			{content: "foo", style: "background-color: #fff; border: solid 1px red; min-width: 75%;"}
+		]},
+		{kind: onyx.Toolbar, components: [
+			{kind: enyo.Grabber},
+			{kind: onyx.Button, content: "Back", ontap: "doBack"}
 		]}
 	],
 	addDocs: function(inData) {

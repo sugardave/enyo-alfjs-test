@@ -47,11 +47,27 @@ enyo.kind({
 	getDocList: function(inSite) {
 		var _self = this;
 		this.alf.getDocList({site: inSite.shortName}, function(data) {
-			console.log("Got a doclist");
+			console.log("Got a doclist for shortName: " + inSite.shortName);
 			_self.doLoadDocs({data: data});
 		}, function(error) {
 			console.log("Error");
 			_self.doLoadDocs({error: error});
+		});
+	},
+	getNode: function(inNodeRef, callback) {
+		var _self = this;
+		this.alf.getNode(inNodeRef, function(data) {
+			console.log("Got a node");
+			console.log(data);
+			if (callback) {
+				callback({data: data});
+			}
+		},
+		function(error) {
+			console.log("Error");
+			if (callback) {
+				callback({error: error});
+			}
 		});
 	},
 
