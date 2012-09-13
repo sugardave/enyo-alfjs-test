@@ -12,7 +12,24 @@ enyo.kind({
 			{name: "docList", kind: enyo.List, fit: true, count: 0, onSetupItem: "setupDoc", ontap: "pickDoc", style: "max-width: 25%;", components: [
 				{name: "doc", kind: "AlfNode"}
 			]},
-			{content: "foo", style: "background-color: #fff; border: solid 1px red; min-width: 75%;"}
+			{style: "min-width: 75%; background-color: #e3e3e3;", components: [
+				{kind: "com.Pre101.Masonry", components: [
+					{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
+					{content: "Wooba wooba", style: "width: 120px; height: 50px;"},
+					{content: "Wooba wooba", style: "width: 50px; height: 120px;"},
+					{content: "Wooba wooba", style: "width: 120px; height: 120px;"},
+					{content: "Wooba wooba", style: "width: 50px; height: 120px;"},
+					{content: "Wooba wooba", style: "width: 190px; height: 50px;"},
+					{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
+					{content: "Wooba wooba", style: "width: 190px; height: 120px;"},
+					{content: "Wooba wooba", style: "width: 120px; height: 50px;"},
+					{content: "Wooba wooba", style: "width: 50px; height: 120px;"},
+					{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
+					{content: "Wooba wooba", style: "width: 190px; height: 120px;"},
+					{content: "Wooba wooba", style: "width: 120px; height: 120px;"},
+					{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
+				]}
+			]}
 		]},
 		{kind: onyx.Toolbar, components: [
 			{kind: enyo.Grabber},
