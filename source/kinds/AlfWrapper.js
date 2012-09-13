@@ -3,7 +3,7 @@ enyo.kind({
 	kind: enyo.Component,
 	events: {
 		onConnect: "",
-		onLoadDocs: "",
+		//onLoadDocs: "",
 		onLoadSites: "",
 		onLoadNodes: ""
 	},

@@ -14,66 +14,7 @@ enyo.kind({
 				{name: "doc", kind: "AlfNode"}
 			]},
 			{layoutKind: enyo.FittableRowsLayout, style: "min-width: 75%; background-color: #e3e3e3;", components: [
-				{kind: enyo.Scroller, fit: true, horizontal: "hidden", components: [
-					{name: "masonry", kind: "com.Pre101.Masonry", components: [
-						{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 120px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 120px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 190px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 190px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 120px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 190px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 120px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 120px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 120px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 190px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 190px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 120px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 190px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 120px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 120px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 120px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 190px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 190px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 120px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 190px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 120px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 120px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 120px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 190px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 190px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 120px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
-						{content: "Wooba wooba", style: "width: 190px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 120px; height: 120px;"},
-						{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
-					]}
-				]}
+				{kind: enyo.Scroller, fit: true, horizontal: "hidden"}
 			]}
 		]},
 		{kind: onyx.Toolbar, components: [
@@ -100,10 +41,30 @@ enyo.kind({
 	pickDoc: function(inSender, inEvent) {
 		var index = inEvent.index;
 		var doc = this.docs[index];
+		var folderPath = doc.location.path + doc.location.file;
 		this.log(doc);
-
+		var callback = enyo.bind(this, function(inSender, inEvent) {
+			var items = inEvent.data.items;
+			var nodes = [];
+			if (items.length) {
+				for (var i = 0, j = items.length; i < j; i += 1) {
+					this.log("ADD A BRICK");
+					this.log(items[i]);
+					//this.$.masonry.createComponent({content: "A node!"});
+					nodes.push({kind: "AlfNode", title: items[i].location.file});
+				}
+				this.buildBricks(nodes);
+			}
+		});
+		this.doRequestDocs({folderPath: folderPath, callback: callback});
 
 
 		return true;
+	},
+	buildBricks: function(inNodes) {
+		this.$.scroller.destroyClientControls();
+		this.$.scroller.createComponent({name: "masonry", kind: "com.Pre101.Masonry"}, {owner: this});
+		this.$.masonry.createComponents(inNodes, {owner: this});
+		this.render();
 	}
 });

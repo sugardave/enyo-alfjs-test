@@ -1,7 +1,7 @@
 enyo.kind({
 	name: "App",
 	components: [
-		{kind: "AlfWrapper", onConnect: "handleConnect", onLoadSites: "handleLoadSites", onLoadDocs: "handleLoadDocs"},
+		{kind: "AlfWrapper", onConnect: "handleConnect", onLoadSites: "handleLoadSites"},
 		{kind: enyo.Panels, classes: "enyo-fit", draggable: false, components: [
 			{name: "loginPanel", kind: "LoginPanel"},
 			{name: "mainPanel", kind: "MainPanel", onBack: "doBack"}
@@ -61,6 +61,11 @@ enyo.kind({
 		return true;
 	},
 	requestDocs: function(inSender, inEvent) {
+		this.log(arguments);
+		var context = enyo.mixin(this.context, {folderPath: inEvent.folderPath});
+		this.log("GET SOME MORE DOCS WITH CONTEXT");
+		this.log(context);
+		this.$.alfWrapper.getDocList(this.context, inEvent.callback);
 		//this.$.alfWrapper.getDocList(this.site, )
 	},
 	doBack: function() {
