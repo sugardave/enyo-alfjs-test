@@ -44,14 +44,20 @@ enyo.kind({
 			}
 		);
 	},
-	getDocList: function(inSite) {
+	getDocList: function(inContext, callback) {
 		var _self = this;
-		this.alf.getDocList({site: inSite.shortName}, function(data) {
-			console.log("Got a doclist for shortName: " + inSite.shortName);
-			_self.doLoadDocs({data: data});
+		this.alf.getDocList(inContext, function(data) {
+			console.log("Got a doclist for shortName: " + inContext.site);
+			if (callback) {
+				callback({}, {data: data}); // super-cheating until re-factored
+			}
+			//_self.doLoadDocs({data: data});
 		}, function(error) {
 			console.log("Error");
-			_self.doLoadDocs({error: error});
+			if (callback) {
+				callback({}, {error: error});
+			}
+			//_self.doLoadDocs({error: error});
 		});
 	},
 	getNode: function(inNodeRef, callback) {
@@ -60,13 +66,13 @@ enyo.kind({
 			console.log("Got a node");
 			console.log(data);
 			if (callback) {
-				callback({data: data});
+				ccallback({}, {data: data}); // super-cheating until re-factored
 			}
 		},
 		function(error) {
 			console.log("Error");
 			if (callback) {
-				callback({error: error});
+				callback({}, {error: error});
 			}
 		});
 	},

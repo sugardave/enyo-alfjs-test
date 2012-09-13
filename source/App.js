@@ -9,6 +9,7 @@ enyo.kind({
 	],
 	handlers: {
 		onLoginRequest: "connectAlf",
+		onRequestDocs: "requestDocs",
 		onShowSite: "showSite"
 	},
 	connectAlf: function(inSender, inEvent) {
@@ -36,17 +37,31 @@ enyo.kind({
 	},
 	showSite: function(inSender, inEvent) {
 		var site = inEvent.site;
+		this.log("HAVE site");
 		this.log(site);
+		this.context = {
+			site: inEvent.site.shortName,
+			folderPath: "/"
+		};
+		this.log(this.context);
+		//this.site = site;
 
 		// get the DocList
-		this.$.alfWrapper.getDocList(site);
+		this.log("GETTING DOC LIST");
+		this.$.alfWrapper.getDocList(this.context, enyo.bind(this, "handleLoadDocs"));
 
 		this.$.panels.next();
 	},
 	handleLoadDocs: function(inSender, inEvent) {
+
+		this.log();
+		this.log(arguments);
 		this.$.mainPanel.addDocs(inEvent.data);
 
 		return true;
+	},
+	requestDocs: function(inSender, inEvent) {
+		//this.$.alfWrapper.getDocList(this.site, )
 	},
 	doBack: function() {
 		this.$.panels.previous();

@@ -4,7 +4,8 @@ enyo.kind({
 	//arrangerKind: enyo.CollapsingArranger,
 	layoutKind: enyo.FittableRowsLayout,
 	events: {
-		onBack: ""
+		onBack: "",
+		onRequestDocs: ""
 	},
 	components: [
 		{kind: onyx.Toolbar, content: "Alfresco Sample"},
@@ -14,7 +15,7 @@ enyo.kind({
 			]},
 			{layoutKind: enyo.FittableRowsLayout, style: "min-width: 75%; background-color: #e3e3e3;", components: [
 				{kind: enyo.Scroller, fit: true, horizontal: "hidden", components: [
-					{kind: "com.Pre101.Masonry", components: [
+					{name: "masonry", kind: "com.Pre101.Masonry", components: [
 						{content: "Wooba wooba", style: "width: 50px; height: 50px;"},
 						{content: "Wooba wooba", style: "width: 120px; height: 50px;"},
 						{content: "Wooba wooba", style: "width: 50px; height: 120px;"},
@@ -100,6 +101,8 @@ enyo.kind({
 		var index = inEvent.index;
 		var doc = this.docs[index];
 		this.log(doc);
+
+
 
 		return true;
 	}
